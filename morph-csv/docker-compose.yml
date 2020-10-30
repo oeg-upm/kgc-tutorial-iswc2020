@@ -1,0 +1,31 @@
+version: "2"
+services:
+#Morph-csv  
+  morphcsv:
+    container_name: morphcsv
+    image: dchaves1/morph-csv:1.1
+    ports: 
+      - "5000:5000"
+    shm_size: '16gb'
+    volumes:
+      - ./data:/data
+      - ./results/:/results
+      - ./mappings:/mappings
+      - ./queries:/queries
+      - ./tmp/csv:/morphcsv/tmp/csv
+    restart: always
+    depends_on:
+       - postgres
+#Postgres
+  postgres:
+    container_name: postgres
+    image: postgres
+    restart: always
+    shm_size: '16gb'
+    environment:
+      POSTGRES_PASSWORD: csv
+      POSTGRES_USER: user
+      POSTGRES_DB: morphcsv
+    volumes:
+      - ./tmp/csv:/tmp/csv
+    restart: always
