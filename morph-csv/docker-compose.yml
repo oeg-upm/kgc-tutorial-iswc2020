@@ -3,7 +3,7 @@ services:
 #Morph-csv  
   morphcsv:
     container_name: morphcsv
-    image: dchaves1/morph-csv:1.1
+    image: dchaves1/morph-csv-demo:1.1
     ports: 
       - "5000:5000"
     shm_size: '16gb'
