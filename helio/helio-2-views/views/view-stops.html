@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Helio</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Base imports -->
+    <link href="/css/favicons/helio-favicon-32x32.png" rel="shortcut icon" type="image/png"/>
+    <script src="/js/jquery/jquery-3.4.0.min.js"></script>
+    <script src="/js/bootstrap/bootstrap.min.js"></script>
+    <link href="/css/bootstrap/bootstrap.min.css" rel="stylesheet"/>
+    <link href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css"rel="stylesheet"/>
+    <script src = "http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+
+    <style type="text/css">
+      #lmap {
+        position: relative;
+        border: 1px solid black;
+        border-radius: 8px;
+        height: 800px;  /* or as desired */
+        width: 100%;  /* This means "100% of the width of its container", the .col-md-8 */
+      }
+    </style>    
+
+  </head>
+  <body>
+    <!-- Page Content 
+    <main role="main">-->
+      <!-- -->
+      <div class="jumbotron">
+        
+        <div class="container">
+          <div class="row" style="text-align: center">
+            <h1> [[${#lists.size(data)}]] Madrid stop stations</h1>
+          </div>
+          <div class="row">      
+             <div class="col-md-12" >
+              <div id="lmap"></div>
+            </div>
+          </div>
+        </div> 
+        <hr> 
+    </div>
+    
+   <!-- </main>-->
+	</body>
+   
+  <script th:inline="javascript">
+    /*<![CDATA[*/    
+      var map = new L.map('lmap').setView([40.416775, -3.703790], 10);
+      L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+        maxZoom: 18,
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+          '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+          'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        id: 'mapbox/streets-v11',
+        tileSize: 512,
+        zoomOffset: -1
+      }).addTo(map);
+
+        var message = /*[[${data}]]*/ 'default';
+        var index;
+        for(index=0; index < message.length; index++){
+            var entry = message[index];
+            var lat = entry.lat.value;
+            var long = entry.long.value;
+            var name = entry.name.value;
+            var uri = entry.s.value;
+            var marker = L.marker([lat, long]).addTo(map);
+            marker.bindPopup("<a href="+uri+"><b>"+name+".</b></a>").openPopup();
+            map.invalidateSize();
+            console.log(map);
+          }
+ 
+      
+    /*]]>*/
+</script>
+</html>

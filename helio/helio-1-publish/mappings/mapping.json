@@ -1,0 +1,16 @@
+{
+  "datasources" : [
+      {
+        "id" : "ISWC - MorphCSV RDF",
+        "refresh" : "1000000",
+        "handler" : {"type" : "RDFHandler", "format" : "N3"},
+        "provider"  : { "type" : "FileProvider", "file" : "./gtfs.nt"}
+      }
+  ],
+   "resource_rules" : [
+    { 
+      "id" : "ISWC Data",
+      "datasource_ids" : ["ISWC - MorphCSV RDF"]
+    }
+  ]
+}

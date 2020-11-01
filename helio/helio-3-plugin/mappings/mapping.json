@@ -1,0 +1,25 @@
+{
+  "datasources" : [
+      {
+        "id" : "ISWC - MorphCSV RDF",
+        "refresh" : "1000000",
+        "handler" : {"type" : "RDFHandler", "format" : "N3"},
+        "provider"  : { 
+        	"type" : "BashProvider", 
+        	"output" : "./morph-csv-dump/results/gtfs.nt",
+        	"commands" : [
+            "pwd",
+        		"bash ./morph-csv-dump/run.sh",
+        		"sed -i -e s/transport.linkeddata.es/localhost:8080/g ./morph-csv-dump/results/gtfs.nt",
+            "sed -i -e s/XMLSchema/XMLSchemaGTFS/g ./morph-csv-dump/results/gtfs.nt"
+        	]
+        }
+      }
+  ],
+   "resource_rules" : [
+    { 
+      "id" : "ISWC Data",
+      "datasource_ids" : ["ISWC - MorphCSV RDF"]
+    }
+  ]
+}

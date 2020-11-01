@@ -1,0 +1,1 @@
+java -jar publisher-0.3.5.jar --mappings=mappings --config=config-plugin.json

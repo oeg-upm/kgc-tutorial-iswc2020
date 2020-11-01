@@ -1,0 +1,6 @@
+"service_id","monday","tuesday","wednesday","thursday","friday","saturday","sunday","start_date","end_date"
+4_I12,false,false,false,false,false,true,false,2017------,2018------
+4_I13,false,false,false,false,false,false,true,2017------,2018------
+4_I14,true,true,true,true,false,false,false,2017------,2018------
+4_I15,false,false,false,false,true,false,false,2017------,2018------
+4_I16,false,false,false,false,true,false,false,2017------,2018------

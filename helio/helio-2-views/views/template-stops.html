@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Helio</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Base imports -->
+    <link href="/css/favicons/helio-favicon-32x32.png" rel="shortcut icon" type="image/png"/>
+    <script src="/js/jquery/jquery-3.4.0.min.js"></script>
+    <script src="/js/bootstrap/bootstrap.min.js"></script>
+    <link href="/css/bootstrap/bootstrap.min.css" rel="stylesheet"/>
+    <link href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css"rel="stylesheet"/>
+    <script src = "http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+
+    <style type="text/css">
+      #lmap {
+        position: relative;
+        border: 1px solid black;
+        border-radius: 8px;
+        height: 300px;  /* or as desired */
+        width: 100%;  /* This means "100% of the width of its container", the .col-md-8 */
+      }
+    </style>    
+
+  </head>
+  <body>
+    <!-- Page Content 
+    <main role="main">-->
+      <!-- -->
+      <div class="jumbotron">
+        <hr>
+      <div class="container">
+         <div class="row" th:each="entry : ${data}" th:if="${entry[0] == 'http://vocab.gtfs.org/terms#parentStation'}">
+          <div class="col-md-12">
+            <span> 
+                Parent Staion <a th:attr="href=${entry[1]}">[[${entry[1]}]]</a>
+            </span>
+            </div>
+          </div>
+          <hr>
+        <div class="row">
+          <div class="col-md-2">
+             <h4>Zone:</h4>
+             <h2>
+                <span th:each="entry : ${data}" th:if="${entry[0] == 'http://vocab.gtfs.org/terms#zone'}" style="color:red"> 
+                [[${#strings.replace(entry[1],'^^http://www.w3.org/2001/XMLSchema#string','')}]]
+                </span> 
+              </h2>
+          </div>
+          <div class="col-md-6"> 
+            <div class="btn-group" role="group" aria-label="Visualisation buttons">
+              <h3>
+                Stop station of: <span th:each="entry : ${data}" th:if="${entry[0] == 'http://xmlns.com/foaf/0.1/name'}"> 
+                [[${#strings.replace(entry[1],'^^http://www.w3.org/2001/XMLSchema#string','')}]]
+                </span> 
+              </h3>
+              <h5>code: <span style="color:blue" th:each="entry : ${data}" th:if="${entry[0] == 'http://vocab.gtfs.org/terms#code'}"> 
+                [[${#strings.replace(entry[1],'^^http://www.w3.org/2001/XMLSchema#string','')}]]
+                </span> id: <span style="color:green" th:each="entry : ${data}" th:if="${entry[0] == 'http://purl.org/dc/terms/identifier'}"> 
+                [[${#strings.replace(entry[1],'^^http://www.w3.org/2001/XMLSchema#string','')}]]
+                </span>
+              </h5>
+              <h7> <span th:each="entry : ${data}" th:if="${entry[0] == 'http://xmlns.com/foaf/0.1/page'}"> 
+                <a th:attr="href=${#strings.replace(entry[1],'^^http://www.w3.org/2001/XMLSchema#string','')}">
+                ([[${#strings.replace(entry[1],'^^http://www.w3.org/2001/XMLSchema#string','')}]]
+                )</a></span></h7>
+            </div>
+          </div>
+           <div class="col-md-4" >
+            <div id="lmap"></div>
+          </div>
+        </div>
+      </div>  
+      <hr> 
+    </div>
+    
+   <!-- </main>-->
+	</body>
+   
+  <script th:inline="javascript">
+    /*<![CDATA[*/    
+    
+      var message = /*[[${data}]]*/ 'default';
+      var filteredLat = message.filter(entry => entry[0]=='http://www.w3.org/2003/01/geo/wgs84_pos#lat')[0][1];
+      var filteredLong = message.filter(entry => entry[0]=='http://www.w3.org/2003/01/geo/wgs84_pos#long')[0][1];
+      filteredLat = parseFloat(filteredLat.replace("^^http://www.w3.org/2001/XMLSchema#double",""));
+      filteredLong = parseFloat(filteredLong.replace("^^http://www.w3.org/2001/XMLSchema#double",""));
+
+      var map = new L.map('lmap').setView([40.416775, -3.703790], 10);
+      L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+        maxZoom: 18,
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+          '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+          'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        id: 'mapbox/streets-v11',
+        tileSize: 512,
+        zoomOffset: -1
+      }).addTo(map);
+      var marker = L.marker([filteredLat, filteredLong]).addTo(map);
+      marker.bindPopup("<b>Stop station.</b>").openPopup();
+      map.invalidateSize();
+      console.log(map);
+    /*]]>*/
+</script>
+</html>

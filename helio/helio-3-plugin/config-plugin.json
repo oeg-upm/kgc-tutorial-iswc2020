@@ -1,0 +1,5 @@
+{
+	"plugins" : [
+		{ "type" : "DataProvider", "class":"helio.plugins.data.providers.BashProvider", "source" : "https://github.com/oeg-upm/helio-plugins/releases/download/%230.1.5/bashprovider-0.1.5.jar"}
+	]
+}
