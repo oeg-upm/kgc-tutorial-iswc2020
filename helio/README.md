@@ -6,6 +6,8 @@ The tutorial follows this directory structure
 
 ```
 helio 
+│─ pre-process.sh
+│─ gtfs.nt.zip
 │─ helio-1-publish  # The first show case
    │─ run.sh 
    └─ mappings
